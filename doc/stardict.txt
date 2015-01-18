@@ -1,0 +1,41 @@
+*stardict.txt* Documentation for stardict.vim
+
+Script  :   stardict.vim  - open stardict dicctionaries.
+Autor   :   E. Manuel Cerrón Angeles
+Email   :   <xerron.angels@gmail.com>
+Changed :   2015-01-15
+============================================================
+                                           *stardict-intro*
+
+1. Overview~
+TODO
+
+1. Overview                         |stardict-intro|
+2. Mappings                         |stardict-mappings|
+3. Functions                        |stardict-functions|
+4. Todo                             |stardict-todo|
+
+===========================================================
+                                        *stardict-mappings*
+
+2. Mappings~
+TODO
+
+===========================================================
+                                        *stardict-function*
+
+3. Functions~
+
+MyglobalfunctionB()~
+This function is one of the global functions in this script.
+An example of usage could be: >
+    :call MyglobalfunctionB()
+<
+    Vim returns:
+    Hello from MyglobalfuncionC() now calling locally:~
+    This is the script-scope function MyfunctionA speaking~
+
+===========================================================
+                                        *stardict-todo*
+
+4. Todo~
