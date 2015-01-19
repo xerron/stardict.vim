@@ -9,6 +9,6 @@ Rapido acceso a diccionarios Stardict 2.4.2. (sdcv)
 
 ## Uso
 
-Keymap: <LeaderLocal>K
+Keymap: \<LeaderLocal\>K
 
 Abre una ventana con el significado de la palabra.
