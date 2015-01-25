@@ -45,12 +45,14 @@ function! s:Lookup(word)
   1,$d
   echo "Buscando la palabra - " . a:word . " - ..."
   let expl=system('sdcv -n ' . a:word)
-  echo expl
+  normal! ggdG
+  put =expl
   " exec "silent 0r !" . s:path . "/thesaurus-lookup " . a:word
   normal! Vgqgg
   exec 'resize ' . (line('$')-1)
   setlocal nomodifiable filetype=thesaurus
   nnoremap <silent> <buffer> q :q<CR>
+
 endfunction
 
 function! StardictBalloonContent()
