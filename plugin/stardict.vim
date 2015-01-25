@@ -43,7 +43,6 @@ function! s:Lookup(word)
   setlocal noswapfile nobuflisted nospell nowrap modifiable
   setlocal buftype=nofile bufhidden=hide
   1,$d
-  echo "Buscando la palabra - " . a:word . " - ..."
   let expl=system('sdcv -n ' . a:word)
   normal! ggdG
   put =expl
@@ -52,7 +51,8 @@ function! s:Lookup(word)
   exec 'resize ' . (line('$')-1)
   setlocal nomodifiable filetype=thesaurus
   nnoremap <silent> <buffer> q :q<CR>
-
+  " Volver a la ventana actual.
+  execute winnr . 'wincmd w'
 endfunction
 
 function! StardictBalloonContent()
