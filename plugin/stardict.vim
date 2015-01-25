@@ -69,12 +69,12 @@ endif
 
 if g:stardict_map_keys
   nnoremap <unique> <LocalLeader>K :StardictCurrentWord<CR>
-  " nmap F :call StardictOpen()<CR>
+  nnoremap <unique> <LocalLeader>B :call StardictBalloonToggle()<CR>
 endif
 
 command! StardictCurrentWord :call <SID>Lookup(expand('<cword>'))
-command! Stardict :call <SID>Lookup(expand('<cword>'))
-command! -nargs=1 Thesaurus :call <SID>Lookup(<f-args>)
+" command! Stardict :call <SID>Lookup(expand('<cword>'))
+command! -nargs=1 Stardict :call <SID>Lookup(<f-args>)
 
 " perro 
 "
