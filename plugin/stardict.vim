@@ -16,9 +16,7 @@ set cpo&vim
 let s:path = expand("<sfile>:p:h")
 
 if !exists("g:stardict_keep_focus")
-  s:stardict_keep_focus=1
-else 
-  s:stardict_keep_focus=g:stardict_keep_focus
+  let g:stardict_keep_focus=1
 endif
 
 function! s:FindLastWindow()
@@ -48,7 +46,7 @@ function! s:Lookup(word)
   setlocal nomodifiable filetype=thesaurus
   nnoremap <silent> <buffer> q :q<CR>
   " Volver a la ventana actual.
-  if s:stardict_keep_focus == 1
+  if g:stardict_keep_focus > 0
     execute winnr . 'wincmd w'
   endif
 endfunction
@@ -60,12 +58,9 @@ function! StardictBalloonContent()
   return expl
 endfunction
 
-" set bexpr=StardictBalloon()
-" set beval
-
-function! StardictBufferContent()
-  let expl=system('sdcv -n ' . expand("<cword>"))
-  return expl
+function! StardictBalloonToggle()
+  set bexpr=StardictBalloonContent()
+  set beval! 
 endfunction
 
 if !exists('g:stardict_map_keys')
