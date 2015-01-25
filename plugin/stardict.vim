@@ -15,14 +15,10 @@ set cpo&vim
 
 let s:path = expand("<sfile>:p:h")
 
-if !exists("g:stardict_dictionary_path")
-  if has('win32') || has('win64')
-    let s:stardict_dictionary_path=$STARDICT_DATA_DIR
-  else
-    let s:stardict_dictionary_path='/usr/share/stardict/dic/'
-  endif
+if !exists("g:stardict_keep_focus")
+  s:stardict_keep_focus=1
 else 
-  let s:stardict_dictionary_path=g:stardict_dictionary_path
+  s:stardict_keep_focus=g:stardict_keep_focus
 endif
 
 function! s:FindLastWindow()
@@ -52,7 +48,9 @@ function! s:Lookup(word)
   setlocal nomodifiable filetype=thesaurus
   nnoremap <silent> <buffer> q :q<CR>
   " Volver a la ventana actual.
-  execute winnr . 'wincmd w'
+  if s:stardict_keep_focus == 1
+    execute winnr . 'wincmd w'
+  endif
 endfunction
 
 function! StardictBalloonContent()
