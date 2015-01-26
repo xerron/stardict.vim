@@ -28,39 +28,40 @@ endfunction
 
 function! s:Lookup(word)
   let winnr = s:FindLastWindow()
+	let cur_winnr = winnr()
   if winnr >= 0
     execute winnr . 'wincmd w'
   else
     silent keepalt belowright split thesaurus
     let g:stardict_window = bufnr('%')
   endif
-  setlocal noswapfile nobuflisted nospell nowrap modifiable
+  setlocal noswapfile nobuflisted nospell wrap modifiable
   setlocal buftype=nofile bufhidden=hide
   1,$d
   let expl=system('sdcv -n ' . a:word)
-  normal! ggdG
+  " normal! ggdG
   put =expl
   " exec "silent 0r !" . s:path . "/thesaurus-lookup " . a:word
   normal! Vgqgg
-  exec 'resize ' . (line('$')-1)
+  exec 'resize ' . (line('$')+1)
   setlocal nomodifiable filetype=thesaurus
   nnoremap <silent> <buffer> q :q<CR>
   " Volver a la ventana actual.
   if g:stardict_keep_focus > 0
-    execute winnr . 'wincmd w'
+    execute cur_winnr . 'wincmd w'
   endif
 endfunction
 
 function! StardictBalloonContent()
   let expl=system('sdcv -n ' .
-        \ v:beval_text .
-        \ '|fmt -cstw 40')
+          \ v:beval_text .
+          \ '|fmt -cstw 40')
   return expl
 endfunction
 
 function! StardictBalloonToggle()
-  set bexpr=StardictBalloonContent()
-  set beval! 
+  setlocal bexpr=StardictBalloonContent()
+  setlocal beval! 
 endfunction
 
 if !exists('g:stardict_map_keys')
@@ -76,8 +77,6 @@ command! StardictCurrentWord :call <SID>Lookup(expand('<cword>'))
 " command! Stardict :call <SID>Lookup(expand('<cword>'))
 command! -nargs=1 Stardict :call <SID>Lookup(<f-args>)
 
-" perro 
-"
 let &cpo = s:save_cpo
 
 
