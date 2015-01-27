@@ -19,6 +19,25 @@ if !exists("g:stardict_keep_focus")
   let g:stardict_keep_focus=1
 endif
 
+" Devuelve la lista de booknames
+function! BooknameList()
+  if exists('g:stardict_booknames')
+    return g:stardict_booknames 
+  endif
+  let s:result =  system('sdcv -l')
+  let s:booknames = split(s:result) 
+  call remove(s:booknames, 0 , 3) 
+  let s:len = len(s:booknames)
+  let s:count = 1
+  while s:count <= s:len/2
+    call remove(s:booknames, s:count) 
+    let s:count += 1
+  endwhile
+  let g:stardict_booknames = s:booknames
+  return g:stardict_booknames
+endfunction
+
+" Buscar la ultima ventana stardict
 function! s:FindLastWindow()
   if exists('g:stardict_window')
     return bufwinnr(g:stardict_window)
@@ -26,6 +45,7 @@ function! s:FindLastWindow()
   return -1
 endfunction
 
+" Imprimir resultado de busqueda
 function! s:Lookup(word)
   let winnr = s:FindLastWindow()
 	let cur_winnr = winnr()
@@ -38,7 +58,15 @@ function! s:Lookup(word)
   setlocal noswapfile nobuflisted nospell wrap modifiable
   setlocal buftype=nofile bufhidden=hide
   1,$d
-  let expl=system('sdcv -n ' . a:word)
+  let s:dict_path=''
+  let s:bookname=''
+  if exists("g:stardict_dictionary_path")
+    let s:dict_path='--data-dir=' . g:stardict_dictionary_path . ' '
+  endif
+  if exists("g:stardict_current_bookname")
+    let s:bookname='--use-dict=' . g:stardict_current_bookname . ' '
+  endif
+  let expl=system('sdcv -n ' . s:dict_path . s:bookname . a:word)
   " normal! ggdG
   put =expl
   " exec "silent 0r !" . s:path . "/thesaurus-lookup " . a:word
@@ -52,29 +80,15 @@ function! s:Lookup(word)
   endif
 endfunction
 
-function! StardictBalloonContent()
-  let expl=system('sdcv -n ' .
-          \ v:beval_text .
-          \ '|fmt -cstw 40')
-  return expl
-endfunction
-
-function! StardictBalloonToggle()
-  setlocal bexpr=StardictBalloonContent()
-  setlocal beval! 
-endfunction
-
 if !exists('g:stardict_map_keys')
   let g:stardict_map_keys=1
 endif
 
 if g:stardict_map_keys
   nnoremap <unique> <LocalLeader>K :StardictCurrentWord<CR>
-  nnoremap <unique> <LocalLeader>B :call StardictBalloonToggle()<CR>
 endif
 
 command! StardictCurrentWord :call <SID>Lookup(expand('<cword>'))
-" command! Stardict :call <SID>Lookup(expand('<cword>'))
 command! -nargs=1 Stardict :call <SID>Lookup(<f-args>)
 
 let &cpo = s:save_cpo
