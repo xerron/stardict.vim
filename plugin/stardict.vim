@@ -20,7 +20,7 @@ if !exists("g:stardict_keep_focus")
 endif
 
 " Devuelve la lista de booknames
-function! BooknameList()
+function! s:BooknameList()
   if exists('g:stardict_booknames')
     return g:stardict_booknames 
   endif
@@ -37,7 +37,7 @@ function! BooknameList()
   return g:stardict_booknames
 endfunction
 
-" Buscar la ultima ventana stardict
+" Devuelve la ultima ventana stardict
 function! s:FindLastWindow()
   if exists('g:stardict_window')
     return bufwinnr(g:stardict_window)
@@ -60,12 +60,15 @@ function! s:Lookup(word)
   1,$d
   let s:dict_path=''
   let s:bookname=''
+  " verifico si esta definido un path
   if exists("g:stardict_dictionary_path")
     let s:dict_path='--data-dir=' . g:stardict_dictionary_path . ' '
   endif
-  if exists("g:stardict_current_bookname")
-    let s:bookname='--use-dict=' . g:stardict_current_bookname . ' '
+  " poner el bookname
+  if exists("g:stardict_bookname")
+    let s:bookname='--use-dict=' . get(g:stardict_booknames, g:stardict_bookname - 1) . ' '
   endif
+  " Ejecutar sdcv
   let expl=system('sdcv -n ' . s:dict_path . s:bookname . a:word)
   " normal! ggdG
   put =expl
@@ -80,6 +83,22 @@ function! s:Lookup(word)
   endif
 endfunction
 
+" Escoger un bookname
+function! s:ChooseBookname()
+  let s:dictionaries = s:BooknameList()
+  echohl Title 
+  echo 'Diccionarios disponibles:' 
+  echohl None 
+  let s:count=1
+  for i in s:dictionaries
+    echo s:count . ' - ' . i
+    let s:count += 1
+  endfor
+  echo 'Selecciona un bookname para stardict: (escriba un numero) '
+  let s:choice = nr2char(getchar())
+  let g:stardict_bookname = s:choice
+endfunction
+
 if !exists('g:stardict_map_keys')
   let g:stardict_map_keys=1
 endif
@@ -89,6 +108,7 @@ if g:stardict_map_keys
 endif
 
 command! StardictCurrentWord :call <SID>Lookup(expand('<cword>'))
+command! StardictChooseBookname :call <SID>ChooseBookname()
 command! -nargs=1 Stardict :call <SID>Lookup(<f-args>)
 
 let &cpo = s:save_cpo

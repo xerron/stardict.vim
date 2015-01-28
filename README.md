@@ -19,13 +19,9 @@ Buscar el significado de una palabra.
 
     :Stardict <word>
 
-Buscar el significado de una palabra escogiendo primero el diccionario.
-
-    :Stardict! <word>
-
 Escoger el diccionario predeterminado.
 
-    :StardictBooknameChoose
+    :StardictChooseBookname
 
 ## Configuración
 
