@@ -2,6 +2,8 @@
 
 Rapido acceso a diccionarios Stardict 2.4.2. (sdcv)
 
+![stardict](https://cloud.githubusercontent.com/assets/1724033/5996081/a10308d0-aa6f-11e4-985b-9312f2c8cab6.gif)
+
 ## Dependencias
 
 - sdcv 
