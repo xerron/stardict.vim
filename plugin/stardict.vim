@@ -52,7 +52,8 @@ function! s:Lookup(word)
   if winnr >= 0
     execute winnr . 'wincmd w'
   else
-    silent keepalt belowright split thesaurus
+    " Abre un buffer llamado stardict
+    silent keepalt belowright split stardict
     let g:stardict_window = bufnr('%')
   endif
   setlocal noswapfile nobuflisted nospell wrap modifiable
@@ -72,10 +73,11 @@ function! s:Lookup(word)
   let expl=system('sdcv -n ' . s:dict_path . s:bookname . a:word)
   " normal! ggdG
   put =expl
+  1d
   " exec "silent 0r !" . s:path . "/thesaurus-lookup " . a:word
   normal! Vgqgg
   exec 'resize ' . (line('$')+1)
-  setlocal nomodifiable filetype=thesaurus
+  setlocal nomodifiable filetype=stardict
   nnoremap <silent> <buffer> q :q<CR>
   " Volver a la ventana actual.
   if g:stardict_keep_focus > 0
@@ -108,7 +110,7 @@ if g:stardict_map_keys
 endif
 
 command! StardictCurrentWord :call <SID>Lookup(expand('<cword>'))
-command! StardictChooseBookname :call <SID>ChooseBookname()
+command! StardictBooknameChoose :call <SID>ChooseBookname()
 command! -nargs=1 Stardict :call <SID>Lookup(<f-args>)
 
 let &cpo = s:save_cpo

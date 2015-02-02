@@ -13,7 +13,7 @@ Windows [sdcv](http://osspack32.googlecode.com/files/sdcv.exe)
 
 Abre una ventana con el significado de la palabra.
 
-    Keymap: \<LeaderLocal\>K
+    Keymap: <LeaderLocal>K
 
 Buscar el significado de una palabra.
 
@@ -21,7 +21,7 @@ Buscar el significado de una palabra.
 
 Escoger el diccionario predeterminado.
 
-    :StardictChooseBookname
+    :StardictBooknameChoose
 
 ## Configuración
 
